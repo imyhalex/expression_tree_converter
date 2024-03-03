@@ -81,7 +81,7 @@ public class Converter {
             if (Character.isDigit(c)) {
                 String number = input[i] + "";
 
-                for (int j = i + 1; i < input.length; j++) {
+                for (int j = i + 1; j < input.length; j++) {
                     if (Character.isDigit(input[j])) {
                         number += input[j];
                         i = j;

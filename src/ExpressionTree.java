@@ -7,27 +7,32 @@ public class ExpressionTree {
     public ExpressionTree() {
         this.stack = new Stack<>();
     }
+    
+    // Helper
+    private boolean isOperator(String s) {
+        return (s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/") || s.equals("^"));
+    }
 
-    public Node bulildTree(String postFixtExpression) {
+    public Node buildTree(String postFixExpression) {
+        String[] tokens = postFixExpression.split(" ");
 
-        for (int i = 0; i < postFixtExpression.length(); i++) {
-            if (Character.isDigit(postFixtExpression.charAt(i))) {
-                Node node = new Node(postFixtExpression.charAt(i));
+        for (String t : tokens) {
+            if (!isOperator(t)) {
+                Node node = new Node(t);
                 stack.push(node);
             } else {
-                Node opeartor = new Node(postFixtExpression.charAt(i));
+                Node operator = new Node(t);
 
                 Node right = stack.pop();
                 Node left = stack.pop();
 
-                opeartor.leftChild = left;
-                opeartor.rightChild = right;
+                operator.leftChild = left;
+                operator.rightChild = right;
 
-                stack.push(opeartor);
+                stack.push(operator);
             }
         }
 
-        // last node in the stack
         Node last = stack.pop();
 
         return last;
@@ -43,21 +48,16 @@ public class ExpressionTree {
 
     public void infix(Node node) {
         if (node == null) return;
-    
-        boolean isOperator = ((String) node.element).matches("[-+*/]");
-        if (isOperator && node.leftChild != null) {
+
+        if (isOperator(node.element.toString()) && node.leftChild != null)
             System.out.print("(");
-        }
-    
+
         infix(node.leftChild);
-    
-        System.out.print(node.element + " "); // Print the current node's value
-    
+        System.out.print(node.element.toString());
         infix(node.rightChild);
-    
-        if (isOperator && node.rightChild != null) {
+
+        if (isOperator(node.element.toString()) && node.rightChild != null)
             System.out.print(")");
-        }
     }
 
     public void postfix(Node node) {
